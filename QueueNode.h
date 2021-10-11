@@ -14,15 +14,19 @@ namespace luzinsan
 		* - а не каждому её элементу.
 		*/
 		//Указатель на начальный элемент очереди
-		static QueueNode* q_BeginQueueA, q_BeginQueueA_B, q_BeginQueueB;
+		static QueueNode* q_BeginQueueA;
+		static QueueNode* q_BeginQueueA_B;
+		static QueueNode* q_BeginQueueB;
 		//Указатель на конечный элемент очереди
-		static QueueNode* q_EndQueueA, q_EndQueueA_B, q_EndQueueB;
+		static QueueNode* q_EndQueueA;
+		static QueueNode* q_EndQueueA_B;
+		static QueueNode* q_EndQueueB;
 	public:
 		// инициализация очереди
 		QueueNode();
-		// Сеттер нижней границы
+		// сеттер нижней границы
 		const QueueNode& SetA(int);
-		// Сеттер верхней границы
+		// сеттер верхней границы
 		const QueueNode& SetB(int);
 		// Добавление элемента в очередь, в которой структурированны 3 подочереди
 		const QueueNode& EnQueue(int);
