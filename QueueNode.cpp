@@ -1,100 +1,37 @@
-#include "QueueNode.h"
-#include <iostream>
-namespace luzinsan
+#pragma once
+
+namespace luzinsan 
 {
-	//��������� �� ��������� ������� �������
-	QueueNode* QueueNode::q_BeginQueueA{ nullptr };
-	QueueNode* QueueNode::q_BeginQueueA_B{ nullptr };
-	QueueNode* QueueNode::q_BeginQueueB{ nullptr };
-	//��������� �� �������� ������� �������
-	QueueNode* QueueNode::q_EndQueueA{ nullptr };
-	QueueNode* QueueNode::q_EndQueueA_B{ nullptr };
-	QueueNode* QueueNode::q_EndQueueB{ nullptr };
-	int QueueNode::q_A{ 5 }, QueueNode::q_B{ 10 };
-
-
-	QueueNode::QueueNode() : q_info{ 0 }, q_next{nullptr}{}
-	
-	const QueueNode& QueueNode::SetA(int A) { q_A = A; return *this; }
-	const QueueNode& QueueNode::SetB(int B) { q_B = B; return *this; }
-
-	// �������� ������� � �������
-	const QueueNode& QueueNode::EnQueue(int x)
+	class QueueNode
 	{
-		QueueNode* p = new QueueNode;
-		p->q_info = x;
-		p->q_next = nullptr;
+	private:
+		int q_info;        //информационное поле   элемента очереди
+		QueueNode* q_next; //указатель на следующий элемент очереди
+		static int q_A, q_B;
+		/*
+		* Зададим два статических указателя – на начало и конец очереди
+		* - так как они принадлежат всей очереди
+		* - а не каждому её элементу.
+		*/
+		//Указатель на начальный элемент очереди
+		static QueueNode* q_BeginQueueA;
+		static QueueNode* q_BeginQueueA_B;
+		static QueueNode* q_BeginQueueB;
+		//Указатель на конечный элемент очереди
+		static QueueNode* q_EndQueueA;
+		static QueueNode* q_EndQueueA_B;
+		static QueueNode* q_EndQueueB;
+	public:
+		// инициализация очереди
+		QueueNode();
+		// сеттер нижней границы
+		const QueueNode& SetA(int);
+		// сеттер верхней границы
+		const QueueNode& SetB(int);
+		// Добавление элемента в очередь, в которой структурированны 3 подочереди
+		const QueueNode& EnQueue(int);
+		// Возвращение элемента из очереди
+		int DeQueue();
+	};
 
-		if (x < q_A)
-		{
-			if (q_BeginQueueA == nullptr)
-				q_BeginQueueA = p;
-			else
-				q_EndQueueA->q_next = p;
-			q_EndQueueA = p;
-		}
-		else if (x >= q_A && x < q_B)
-		{
-			if (q_BeginQueueA_B == nullptr)
-				q_BeginQueueA_B = p;
-			else
-				q_EndQueueA_B->q_next = p;
-			q_EndQueueA_B = p;
-		}
-		else
-		{
-			if (q_BeginQueueB == nullptr)
-				q_BeginQueueB = p;
-			else
-				q_EndQueueB->q_next = p;
-			q_EndQueueB = p;
-		}
-		return *this;
-	}
-
-
-	// ���������� ������ ������� �������
-	int QueueNode::DeQueue()
-	{
-		int val;
-		QueueNode* p = new QueueNode;
-		p = q_BeginQueueA;
-		if (q_BeginQueueA == nullptr)
-		{
-			p = q_BeginQueueA_B;
-			if (q_BeginQueueA_B == nullptr)
-			{
-				p = q_BeginQueueB;
-				if (q_BeginQueueB == nullptr)
-				{
-					std::cout << "\n������� �����������\n";
-					return 0;
-				}
-				else 
-				{
-					val = q_BeginQueueB->q_info;
-					q_BeginQueueB = p->q_next;
-					if (q_BeginQueueB == nullptr)
-						q_EndQueueB = nullptr;
-				}
-			}
-			else 
-			{
-				val = q_BeginQueueA_B->q_info;
-				q_BeginQueueA_B = p->q_next;
-				if (q_BeginQueueA_B == nullptr)
-					q_EndQueueA_B = nullptr;
-			}
-		}
-		else 
-		{
-			val = q_BeginQueueA->q_info;
-			q_BeginQueueA = p->q_next;
-			if (q_BeginQueueA == nullptr)
-				q_EndQueueA = nullptr;
-		}
-		
-		delete p;
-		return val;
-	}
 }
